@@ -1,0 +1,11 @@
+.env
+ebay/.env
+ebay/tokens.json
+ebay/tokens.json.lock
+ebay/cache/
+__pycache__/
+*.pyc
+webui/frontend/node_modules/
+webui/frontend/dist/
+.idea/
+.vscode/

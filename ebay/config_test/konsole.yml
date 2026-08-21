@@ -1,0 +1,39 @@
+bot:
+  - Consoles
+category:
+  - ';'
+ebay_category:
+  - 139971
+get_description: False
+keywords:
+  - '!scuf;!portal;!ps5 controller;ps 5;ps5;playstation 5;play station 5;playstation5;!dual;!disk drive;!disc drive;!remote player;!steering wheel;!volant;!Ps 4;!PlayStation 4;!play station 4;!PlayStation 5 controller;!Pulse;!ps5 ssd;!ps5 aim;!edge controller'
+  - '!Lite;switch;!switch joy '
+  - 'xbox series s;xbox serie s;xbox seriess;xbox s ;!seagate'
+  - 'xbox series x;xbox serie x;xbox seriesx;xbox x ;!seagate'
+  - 'switch oled'
+  - 'switch 2 ;!switch 2 joy;!pro controller'
+page_count: 1
+price_ranges:
+  - 225-300
+  - 75-150
+  - 150-225
+  - 270-390
+  - 150-225
+  - 300-390
+bot_blocklist:
+  - for parts
+  - not working
+  - parts only
+  - sold as is
+  - defective
+  - local pickup only
+  - pour pièces
+  - pour pieces
+  - défectueux
+  - defectueux
+  - ramassage seulement
+direkt_kaufen_only: True
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec

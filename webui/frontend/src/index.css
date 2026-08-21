@@ -1,0 +1,90 @@
+:root {
+  --bg: #0b0d14;
+  --surface: #12151f;
+  --surface-2: #1a1e2b;
+  --border: #262b3d;
+  --text: #e5e7ef;
+  --muted: #8b91a7;
+  --purple: #a78bfa;
+  --fuchsia: #e879f9;
+  --red: #f87171;
+  --green: #34d399;
+  --lime: #a3e635;
+  --cyan: #67e8f9;
+  --primary: #7c3aed;
+  --danger: #dc2626;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+}
+
+input,
+textarea {
+  outline: none;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+/* Toasts (lib/toast.ts) */
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast {
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--green);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  opacity: 1;
+  transition: opacity 0.4s ease;
+  max-width: 360px;
+}
+
+.toast.error {
+  border-left-color: var(--red);
+}
+
+.toast.fade-out {
+  opacity: 0;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}

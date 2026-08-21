@@ -1,0 +1,47 @@
+services:
+  ebay-scraper:
+    build: ./ebay
+    restart: unless-stopped
+    environment:
+      # eBay Developer (Production)
+      - EBAY_CLIENT_ID=${EBAY_CLIENT_ID}
+      - EBAY_CLIENT_SECRET=${EBAY_CLIENT_SECRET}
+      - EBAY_REDIRECT_URI=${EBAY_REDIRECT_URI}
+      # Telegram
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TELEGRAM_TOKEN_LAPTOPS=${TELEGRAM_TOKEN_LAPTOPS}
+      - TELEGRAM_TOKEN_CONSOLES=${TELEGRAM_TOKEN_CONSOLES}
+      - TELEGRAM_TOKEN_PHONES=${TELEGRAM_TOKEN_PHONES}
+      - TELEGRAM_TOKEN_TABLETS=${TELEGRAM_TOKEN_TABLETS}
+      - TELEGRAM_TOKEN_GADGETS=${TELEGRAM_TOKEN_GADGETS}
+      # Scheduling
+      - SCRAPE_INTERVAL=${SCRAPE_INTERVAL:-300}
+    volumes:
+      - ebay_data:/data
+
+  webui:
+    build:
+      context: .
+      dockerfile: webui/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      # Auth de l'interface
+      - UI_USERNAME=${UI_USERNAME}
+      - UI_PASSWORD=${UI_PASSWORD}
+      # Requis pour « Lancer maintenant » (subprocess scrapper.py)
+      - EBAY_CLIENT_ID=${EBAY_CLIENT_ID}
+      - EBAY_CLIENT_SECRET=${EBAY_CLIENT_SECRET}
+      - EBAY_REDIRECT_URI=${EBAY_REDIRECT_URI}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TELEGRAM_TOKEN_LAPTOPS=${TELEGRAM_TOKEN_LAPTOPS}
+      - TELEGRAM_TOKEN_CONSOLES=${TELEGRAM_TOKEN_CONSOLES}
+      - TELEGRAM_TOKEN_PHONES=${TELEGRAM_TOKEN_PHONES}
+      - TELEGRAM_TOKEN_TABLETS=${TELEGRAM_TOKEN_TABLETS}
+      - TELEGRAM_TOKEN_GADGETS=${TELEGRAM_TOKEN_GADGETS}
+    volumes:
+      - ebay_data:/data
+
+volumes:
+  ebay_data:

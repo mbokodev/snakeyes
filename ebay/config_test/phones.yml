@@ -1,0 +1,57 @@
+bot:
+  - Phones
+category:
+  - ';'
+ebay_category:
+  - 9355
+price_ranges:
+  - 225-375
+  - 450-675
+  - 225-345
+  - 300-390
+  - 150-195
+  - 300-420
+  - 150-210
+  - 150-270
+  - 90-120
+  - 75-105
+  - 450-570
+keywords:
+  - s 23 ultra;galaxy s23 ultra;Samsung s23 ultra;Samsung galaxy s23 ultra
+  - Fold 6;Vivo fold x3;Mi mix fold 4
+  - 's24;s 24;!fe;Pixel 8 Pro; Pixel 9'
+  - 'IPhone 15;!pro;!max;pixel 9 pro'
+  - '!Iphone 13;Iphone 13;i phone 13'
+  - S25; S 25;pixel 10
+  - 'a55;a 55;!zte; Pixel 8'
+  - 'a56;a 56;!zte'
+  - 'a53;a 53;!zte'
+  - A52;Samsung A52s;A52s
+  - '15 pro max;IPhone 16;S24 ultra;!16e'
+page_count: 1
+get_description: False
+bot_blocklist:
+  - for parts
+  - not working
+  - parts only
+  - sold as is
+  - cracked screen
+  - screen cracked
+  - broken screen
+  - screen damage
+  - lcd damage
+  - local pickup only
+  - pour pièces
+  - pour pieces
+  - défectueux
+  - defectueux
+  - écran fissuré
+  - ecran fissure
+  - écran brisé
+  - ecran brise
+  - vitre fissurée
+  - ramassage seulement
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec

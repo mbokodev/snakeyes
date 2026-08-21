@@ -1,0 +1,10 @@
+.env
+.env.example
+tokens.json
+tokens.json.lock
+cache/
+config_test/
+__pycache__/
+*.pyc
+.vscode/
+debug_perms.py

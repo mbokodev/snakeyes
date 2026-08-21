@@ -1,0 +1,15 @@
+**/node_modules
+**/dist
+**/__pycache__
+*.pyc
+ebay/.env
+ebay/.env.example
+ebay/tokens.json
+ebay/tokens.json.lock
+ebay/cache
+ebay/config_test
+ebay/debug_perms.py
+.vscode
+.git
+Bot.tsx
+Cron.tsx
