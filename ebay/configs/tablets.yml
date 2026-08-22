@@ -48,9 +48,4 @@ bot_blocklist:
   - écran fissuré
   - ecran fissure
   - ramassage seulement
-item_location_provinces:
-  - QC
-  - Quebec
-  - Québec
-  - ON
-  - Ontario
+item_location_provinces: []

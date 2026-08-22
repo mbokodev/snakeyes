@@ -42,9 +42,4 @@ block_lower_range:
 ebay_category:
   - 175672
 get_description: True
-item_location_provinces:
-  - QC
-  - Quebec
-  - Québec
-  - ON
-  - Ontario
+item_location_provinces: []

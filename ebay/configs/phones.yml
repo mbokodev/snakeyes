@@ -51,9 +51,4 @@ bot_blocklist:
   - ecran brise
   - vitre fissurée
   - ramassage seulement
-item_location_provinces:
-  - QC
-  - Quebec
-  - Québec
-  - ON
-  - Ontario
+item_location_provinces: []

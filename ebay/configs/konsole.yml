@@ -33,9 +33,4 @@ bot_blocklist:
   - defectueux
   - ramassage seulement
 direkt_kaufen_only: True
-item_location_provinces:
-  - QC
-  - Quebec
-  - Québec
-  - ON
-  - Ontario
+item_location_provinces: []
