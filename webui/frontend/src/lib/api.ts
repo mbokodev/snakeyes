@@ -56,7 +56,15 @@ export interface StatusEntry {
 
 export const getStatus = () => request<StatusEntry[]>('GET', '/api/status')
 export const runNow = (name: string) =>
-  request<{ ok: boolean; returncode: number; output: string }>(
+  request<{ ok: boolean; stopped?: boolean; returncode: number; output: string }>(
     'POST',
     `/api/status/${encodeURIComponent(name)}/run`,
+  )
+export const stopRun = (name: string) =>
+  request<{ ok: boolean }>('POST', `/api/status/${encodeURIComponent(name)}/stop`)
+export const setEnabled = (name: string, enabled: boolean) =>
+  request<{ name: string; enabled: boolean }>(
+    'PUT',
+    `/api/status/${encodeURIComponent(name)}/enabled`,
+    { enabled },
   )

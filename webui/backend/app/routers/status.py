@@ -9,8 +9,17 @@ from pathlib import Path
 
 import yaml
 from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
-from ..files import CACHE_DIR, CONFIG_DIR, STATUS_DIR, safe_config_path
+from ..files import (
+    CACHE_DIR,
+    CONFIG_DIR,
+    STATUS_DIR,
+    atomic_write,
+    dump_yaml,
+    parse_yaml,
+    safe_config_path,
+)
 
 router = APIRouter()
 
@@ -19,6 +28,8 @@ RUN_TIMEOUT = int(os.environ.get("RUN_TIMEOUT", "180"))
 LOCK_STALE_S = 300  # même valeur que le scraper
 
 _run_locks: dict[str, asyncio.Lock] = {}
+_procs: dict[str, asyncio.subprocess.Process] = {}
+_stopped: set[str] = set()
 
 
 def _entry(path: Path) -> dict:
@@ -92,13 +103,50 @@ async def run_now(name: str):
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.STDOUT,
         )
+        _stopped.discard(path.stem)
+        _procs[path.stem] = proc
         try:
             out, _ = await asyncio.wait_for(proc.communicate(), timeout=RUN_TIMEOUT)
         except asyncio.TimeoutError:
             proc.kill()
             raise HTTPException(status_code=504, detail=f"Timeout ({RUN_TIMEOUT}s) — run interrompu")
+        finally:
+            _procs.pop(path.stem, None)
+        stopped = path.stem in _stopped
+        _stopped.discard(path.stem)
+        if stopped:
+            # Le process tué n'a pas pu relâcher son lock fichier : on nettoie
+            # pour ne pas afficher « En cours » pendant 5 min.
+            (CACHE_DIR / f"{path.stem}_cache.lock").unlink(missing_ok=True)
         return {
             "ok": proc.returncode == 0,
+            "stopped": stopped,
             "returncode": proc.returncode,
             "output": out.decode(errors="replace")[-4000:],
         }
+
+
+@router.post("/status/{name}/stop")
+async def stop_run(name: str):
+    """Interrompt un run manuel en cours (lancé via « Lancer maintenant »)."""
+    path = safe_config_path(name)
+    proc = _procs.get(path.stem)
+    if proc is None or proc.returncode is not None:
+        raise HTTPException(status_code=409, detail="Aucun run manuel en cours pour cette config")
+    _stopped.add(path.stem)
+    proc.terminate()
+    return {"ok": True}
+
+
+class EnabledBody(BaseModel):
+    enabled: bool
+
+
+@router.put("/status/{name}/enabled")
+def set_enabled(name: str, body: EnabledBody):
+    """Active/désactive une config (clé YAML `enabled`, lue par run.sh au prochain cycle)."""
+    path = safe_config_path(name)
+    data = parse_yaml(path.read_text(encoding="utf-8"))
+    data["enabled"] = body.enabled
+    atomic_write(path, dump_yaml(data))
+    return {"name": path.name, "enabled": body.enabled}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Activity, Play, RefreshCcw, Clock, Database, CheckCircle2, XCircle, Loader2 } from 'lucide-react'
-import { getStatus, runNow, StatusEntry } from '../lib/api'
+import { Activity, Play, RefreshCcw, Clock, Database, CheckCircle2, XCircle, Loader2, Square, Power } from 'lucide-react'
+import { getStatus, runNow, stopRun, setEnabled, StatusEntry } from '../lib/api'
 import { toast } from '../lib/toast'
 
 function timeAgo(iso: string | null): string {
@@ -35,6 +35,7 @@ export default function Status() {
   const [entries, setEntries] = useState<StatusEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [runningNow, setRunningNow] = useState<string | null>(null)
+  const [toggling, setToggling] = useState<string | null>(null)
   const [lastOutput, setLastOutput] = useState<{ name: string; output: string } | null>(null)
 
   const fetchStatus = async () => {
@@ -59,7 +60,9 @@ export default function Status() {
     try {
       const res = await runNow(name)
       setLastOutput({ name, output: res.data.output })
-      if (res.data.ok) {
+      if (res.data.stopped) {
+        toast(`Run interrompu pour ${name.replace('.yml', '')}`, 'success')
+      } else if (res.data.ok) {
         toast(`Run terminé pour ${name.replace('.yml', '')}`, 'success')
       } else {
         toast(`Run en erreur (code ${res.data.returncode})`, 'error')
@@ -69,6 +72,32 @@ export default function Status() {
     } finally {
       setRunningNow(null)
       fetchStatus()
+    }
+  }
+
+  const handleStop = async (name: string) => {
+    try {
+      await stopRun(name)
+    } catch (err: any) {
+      toast(err?.response?.data?.detail || "Erreur lors de l'arrêt", 'error')
+    }
+  }
+
+  const handleToggle = async (name: string, enabled: boolean) => {
+    setToggling(name)
+    try {
+      await setEnabled(name, enabled)
+      toast(
+        enabled
+          ? `${name.replace('.yml', '')} activée`
+          : `${name.replace('.yml', '')} désactivée — ignorée au prochain cycle`,
+        'success',
+      )
+      await fetchStatus()
+    } catch (err: any) {
+      toast(err?.response?.data?.detail || 'Erreur lors du changement', 'error')
+    } finally {
+      setToggling(null)
     }
   }
 
@@ -117,11 +146,21 @@ export default function Status() {
               <div key={e.name} className="card" style={{ padding: 18, background: 'var(--surface-2)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 12 }}>
                   <span style={{ fontWeight: 700, fontSize: 15 }}>{e.name.replace('.yml', '')}</span>
-                  {e.enabled ? (
-                    <span style={badgeStyle('var(--green)', 'rgba(52,211,153,0.12)')}>Active</span>
-                  ) : (
-                    <span style={badgeStyle('var(--muted)', 'rgba(156,163,175,0.12)')}>Désactivée</span>
-                  )}
+                  <button
+                    onClick={() => handleToggle(e.name, !e.enabled)}
+                    disabled={toggling === e.name}
+                    title={e.enabled ? 'Cliquer pour désactiver (ignorée au prochain cycle)' : 'Cliquer pour activer'}
+                    style={{
+                      ...(e.enabled
+                        ? badgeStyle('var(--green)', 'rgba(52,211,153,0.12)')
+                        : badgeStyle('var(--muted)', 'rgba(156,163,175,0.12)')),
+                      border: 'none',
+                      cursor: toggling === e.name ? 'wait' : 'pointer',
+                    }}
+                  >
+                    {toggling === e.name ? <Loader2 size={12} className="spin" /> : <Power size={12} />}
+                    {e.enabled ? 'Active' : 'Désactivée'}
+                  </button>
                   {e.running && (
                     <span style={badgeStyle('var(--cyan)', 'rgba(103,232,249,0.12)')}>
                       <Loader2 size={12} className="spin" /> En cours
@@ -137,6 +176,22 @@ export default function Status() {
                     </span>
                   ))}
                   <div style={{ flex: 1 }} />
+                  {runningNow === e.name && (
+                    <button
+                      onClick={() => handleStop(e.name)}
+                      style={{
+                        padding: '8px 14px', borderRadius: 9,
+                        border: '1px solid rgba(248,113,113,0.4)',
+                        background: 'rgba(248,113,113,0.12)',
+                        color: 'var(--red)',
+                        cursor: 'pointer',
+                        display: 'flex', alignItems: 'center', gap: 7,
+                        fontWeight: 600, fontSize: 13,
+                      }}
+                    >
+                      <Square size={14} /> Arrêter
+                    </button>
+                  )}
                   <button
                     onClick={() => handleRun(e.name)}
                     disabled={runningNow !== null}
