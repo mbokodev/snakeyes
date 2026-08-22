@@ -53,3 +53,5 @@ bot_blocklist:
   - vitre fissurée
   - ramassage seulement
 item_location_provinces: []
+kijiji_url: https://www.kijiji.ca/b-cell-phone/canada/c760l0
+kijiji_price: 80-1600

@@ -42,6 +42,8 @@ while true; do
     {
       echo "── run $(date '+%Y-%m-%d %H:%M:%S') ─────────────────────────"
       python scrapper.py "$cfg" 2>&1 || echo "⚠️  run failed for $cfg (will retry next cycle)"
+      # Kijiji companion run — no-op unless the config defines kijiji_url
+      python kijiji_scrapper.py "$cfg" 2>&1 || echo "⚠️  kijiji run failed for $cfg (will retry next cycle)"
     } | log_append "$LOG_DIR/$stem.log"
   done
   sleep "$INTERVAL"

@@ -35,3 +35,5 @@ bot_blocklist:
   - ramassage seulement
 direkt_kaufen_only: True
 item_location_provinces: []
+kijiji_url: https://www.kijiji.ca/b-jeux-videos-consoles/canada/c141l0
+kijiji_price: 80-800

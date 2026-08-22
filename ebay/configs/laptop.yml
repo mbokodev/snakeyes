@@ -44,3 +44,5 @@ ebay_category:
   - 175672
 get_description: True
 item_location_provinces: []
+kijiji_url: https://www.kijiji.ca/b-laptops/canada/c773l0
+kijiji_price: 200-4000
