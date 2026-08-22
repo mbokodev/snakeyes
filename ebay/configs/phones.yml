@@ -5,17 +5,18 @@ category:
 ebay_category:
   - 9355
 price_ranges:
-  - 225-375
-  - 450-675
-  - 225-345
-  - 300-390
-  - 150-195
-  - 300-420
-  - 150-210
-  - 150-270
-  - 90-120
-  - 75-105
-  - 450-570
+  - 300-550
+  - 450-700
+  - 280-450
+  - 350-550
+  - 200-330
+  - 450-700
+  - 180-300
+  - 200-320
+  - 120-220
+  - 80-160
+  - 400-850
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[80..1600],priceCurrency:CAD'
 keywords:
   - s 23 ultra;galaxy s23 ultra;Samsung s23 ultra;Samsung galaxy s23 ultra
   - Fold 6;Vivo fold x3;Mi mix fold 4

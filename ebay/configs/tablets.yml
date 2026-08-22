@@ -16,14 +16,15 @@ keywords:
   - 'ipad pro m4;ipad pro 2024;tab s10 ultra;tab s10;tab s 10 plus;tab s11;tab s 11;!lite;!fe;!cover'
 page_count: 1
 price_ranges:
-  - 45-75
-  - 75-150
-  - 150-210
-  - 225-270
-  - 300-375
-  - 375-480
-  - 600-750
-  - 600-900
+  - 50-110
+  - 90-180
+  - 140-260
+  - 150-260
+  - 250-420
+  - 350-550
+  - 450-700
+  - 500-1300
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[50..2500],priceCurrency:CAD'
 bot_blocklist:
   - for parts
   - not working

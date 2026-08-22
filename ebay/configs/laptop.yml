@@ -13,14 +13,15 @@ keywords:
   - 144Hz;165Hz;240Hz;300Hz;OLED;QHD;2560x1440;32GB RAM;32 Go RAM;64GB RAM;64 Go RAM;Quadro;Xeon
 page_count: 1
 price_ranges:
-  - 150-375
-  - 225-450
-  - 300-600
-  - 450-750
-  - 600-1050
-  - 900-1800
-  - 300-1500
-  - 300-750
+  - 250-500
+  - 300-650
+  - 350-800
+  - 450-900
+  - 700-1400
+  - 1200-2600
+  - 300-1000
+  - 300-800
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[200..4000],priceCurrency:CAD'
 bot_blocklist:
   - for parts
   - not working

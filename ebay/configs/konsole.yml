@@ -14,12 +14,13 @@ keywords:
   - 'switch 2 ;!switch 2 joy;!pro controller'
 page_count: 1
 price_ranges:
-  - 225-300
-  - 75-150
-  - 150-225
-  - 270-390
-  - 150-225
-  - 300-390
+  - 300-480
+  - 100-190
+  - 130-240
+  - 280-430
+  - 180-290
+  - 250-500
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[80..800],priceCurrency:CAD'
 bot_blocklist:
   - for parts
   - not working
