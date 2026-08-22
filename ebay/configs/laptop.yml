@@ -9,7 +9,7 @@ keywords:
   - '!N3060;!N4050;3060;3070;4050;RX6600M;RX6700M;RX6800M;RX7600M;RX7700M;12900;12800;12700;14500;13700;Ryzen 7 7745HX;Ryzen 9 7845HX;Core Ultra 5;Core Ultra 7;Pro 2022;regex:(?=.*\b M3\b)(?=.*\bMacBook\b);regex:(?=.*\b M2 Pro\b)(?=.*\bMacBook\b)'
   - '3080;4060;4070;4080;RX6800M;RX6850M XT;RX7600M;RX7700M;RX7800M;RX7900M;14900;14700;13980;13950;13900;13800;12950;12900;Ryzen 9 7945HX;Ryzen 9 7945HX3D;Core Ultra 9;Pro 2023;regex:(?=.*\b M4\b)(?=.*\bMacBook\b);regex:(?=.*\b M3 Pro\b)(?=.*\bMacBook\b)'
   - '5070;5080;5090;4090;RX7800M;RX7900M;RX7950M;Ryzen AI 9;Ryzen AI 7;Pro 2024;!optiplex;regex:(?=.*\b M3 Max\b)(?=.*\bMacBook\b);regex:(?=.*\b M4 Pro\b)(?=.*\bMacBook\b);regex:(?=.*\b M4 Max\b)(?=.*\bMacBook\b)'
-  - '!regex:\d{3,}.*$;msi;gigabyte;gaming;rtx;rog ;strix;tuf ;scar;victus;legion;omen;nitro;alienware;predator;helios;triton;blade;razer;alpha;aurora'
+  - 'msi;gigabyte;gaming;rtx;rog ;strix;tuf ;scar;victus;legion;omen;nitro;alienware;predator;helios;triton;blade;razer;alpha;aurora'
   - 144Hz;165Hz;240Hz;300Hz;OLED;QHD;2560x1440;32GB RAM;32 Go RAM;64GB RAM;64 Go RAM;Quadro;Xeon
 page_count: 1
 price_ranges:
