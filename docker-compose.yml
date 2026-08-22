@@ -24,8 +24,11 @@ services:
       context: .
       dockerfile: webui/Dockerfile
     restart: unless-stopped
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
+    networks:
+      - default
+      - dokploy-network
     environment:
       # Auth de l'interface
       - UI_USERNAME=${UI_USERNAME}
@@ -45,3 +48,7 @@ services:
 
 volumes:
   ebay_data:
+
+networks:
+  dokploy-network:
+    external: true
