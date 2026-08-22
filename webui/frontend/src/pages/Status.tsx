@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Activity, Play, RefreshCcw, Clock, Database, CheckCircle2, XCircle, Loader2, Square, Power } from 'lucide-react'
-import { getStatus, runNow, stopRun, setEnabled, StatusEntry } from '../lib/api'
+import { Activity, Play, RefreshCcw, Clock, Database, CheckCircle2, XCircle, Loader2, Square, Power, FileText } from 'lucide-react'
+import { getStatus, runNow, stopRun, setEnabled, getLogs, StatusEntry } from '../lib/api'
 import { toast } from '../lib/toast'
 
 function timeAgo(iso: string | null): string {
@@ -37,6 +37,8 @@ export default function Status() {
   const [runningNow, setRunningNow] = useState<string | null>(null)
   const [toggling, setToggling] = useState<string | null>(null)
   const [lastOutput, setLastOutput] = useState<{ name: string; output: string } | null>(null)
+  const [logs, setLogs] = useState<{ name: string; content: string } | null>(null)
+  const [logsLoading, setLogsLoading] = useState(false)
 
   const fetchStatus = async () => {
     try {
@@ -81,6 +83,23 @@ export default function Status() {
     } catch (err: any) {
       toast(err?.response?.data?.detail || "Erreur lors de l'arrêt", 'error')
     }
+  }
+
+  const fetchLogs = async (name: string) => {
+    setLogsLoading(true)
+    try {
+      const res = await getLogs(name)
+      setLogs({ name, content: res.data.content || 'Aucun log pour cette configuration (le prochain run en écrira).' })
+    } catch (err: any) {
+      toast(err?.response?.data?.detail || 'Erreur lors du chargement du journal', 'error')
+    } finally {
+      setLogsLoading(false)
+    }
+  }
+
+  const handleLogs = (name: string) => {
+    if (logs?.name === name) setLogs(null)
+    else fetchLogs(name)
   }
 
   const handleToggle = async (name: string, enabled: boolean) => {
@@ -176,6 +195,21 @@ export default function Status() {
                     </span>
                   ))}
                   <div style={{ flex: 1 }} />
+                  <button
+                    onClick={() => handleLogs(e.name)}
+                    style={{
+                      padding: '8px 14px', borderRadius: 9,
+                      border: '1px solid var(--border)',
+                      background: logs?.name === e.name ? 'var(--surface)' : 'transparent',
+                      color: 'var(--muted)',
+                      cursor: 'pointer',
+                      display: 'flex', alignItems: 'center', gap: 7,
+                      fontWeight: 600, fontSize: 13,
+                    }}
+                  >
+                    {logsLoading && logs?.name !== e.name ? <Loader2 size={14} className="spin" /> : <FileText size={14} />}
+                    Journal
+                  </button>
                   {runningNow === e.name && (
                     <button
                       onClick={() => handleStop(e.name)}
@@ -237,6 +271,36 @@ export default function Status() {
                     color: 'var(--red)', fontSize: 12.5, fontFamily: 'monospace',
                   }}>
                     {lr.error}
+                  </div>
+                )}
+
+                {logs?.name === e.name && (
+                  <div style={{ marginTop: 10 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+                      <span style={{ fontSize: 13, color: 'var(--muted)' }}>
+                        Journal — 200 dernières lignes (runs planifiés + manuels)
+                      </span>
+                      <button
+                        onClick={() => fetchLogs(e.name)}
+                        style={{
+                          padding: '5px 10px', borderRadius: 7,
+                          border: '1px solid var(--border)', background: 'transparent',
+                          color: 'var(--muted)', cursor: 'pointer',
+                          display: 'flex', alignItems: 'center', gap: 5, fontSize: 12, fontWeight: 600,
+                        }}
+                      >
+                        {logsLoading ? <Loader2 size={12} className="spin" /> : <RefreshCcw size={12} />}
+                        Rafraîchir
+                      </button>
+                    </div>
+                    <pre style={{
+                      margin: 0, padding: 12, borderRadius: 8,
+                      background: 'var(--bg)', border: '1px solid var(--border)',
+                      color: 'var(--cyan)', fontSize: 12, overflowX: 'auto',
+                      whiteSpace: 'pre-wrap', maxHeight: 340, overflowY: 'auto',
+                    }}>
+                      {logs.content}
+                    </pre>
                   </div>
                 )}
 

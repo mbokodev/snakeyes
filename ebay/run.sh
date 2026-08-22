@@ -7,6 +7,20 @@ set -u
 
 CONFIG_DIR="${CONFIG_DIR:-/data/configs}"
 INTERVAL="${SCRAPE_INTERVAL:-300}"
+LOG_DIR="${LOG_DIR:-/data/logs}"
+LOG_MAX_BYTES="${LOG_MAX_BYTES:-1048576}"   # rotate au-delà de 1 Mo (on garde la moitié)
+
+mkdir -p "$LOG_DIR"
+
+# Append stdin to the per-config log, then cap its size.
+log_append() {
+  # $1 = log file
+  tee -a "$1"
+  size=$(wc -c < "$1" 2>/dev/null || echo 0)
+  if [ "$size" -gt "$LOG_MAX_BYTES" ]; then
+    tail -c "$((LOG_MAX_BYTES / 2))" "$1" > "$1.tmp" && mv "$1.tmp" "$1"
+  fi
+}
 
 # Seed: copy the bundled configs on first start (empty shared dir)
 mkdir -p "$CONFIG_DIR"
@@ -24,7 +38,11 @@ while true; do
       echo "⏭️  $(basename "$cfg") disabled (enabled: false)"
       continue
     fi
-    python scrapper.py "$cfg" || echo "⚠️  run failed for $cfg (will retry next cycle)"
+    stem=$(basename "$cfg" .yml)
+    {
+      echo "── run $(date '+%Y-%m-%d %H:%M:%S') ─────────────────────────"
+      python scrapper.py "$cfg" 2>&1 || echo "⚠️  run failed for $cfg (will retry next cycle)"
+    } | log_append "$LOG_DIR/$stem.log"
   done
   sleep "$INTERVAL"
 done

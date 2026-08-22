@@ -62,6 +62,11 @@ export const runNow = (name: string) =>
   )
 export const stopRun = (name: string) =>
   request<{ ok: boolean }>('POST', `/api/status/${encodeURIComponent(name)}/stop`)
+export const getLogs = (name: string, lines = 200) =>
+  request<{ content: string; size: number }>(
+    'GET',
+    `/api/logs/${encodeURIComponent(name)}?lines=${lines}`,
+  )
 export const setEnabled = (name: string, enabled: boolean) =>
   request<{ name: string; enabled: boolean }>(
     'PUT',

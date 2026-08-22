@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from ..files import (
     CACHE_DIR,
     CONFIG_DIR,
+    LOG_DIR,
     STATUS_DIR,
     atomic_write,
     dump_yaml,
@@ -118,12 +119,50 @@ async def run_now(name: str):
             # Le process tué n'a pas pu relâcher son lock fichier : on nettoie
             # pour ne pas afficher « En cours » pendant 5 min.
             (CACHE_DIR / f"{path.stem}_cache.lock").unlink(missing_ok=True)
+        _append_log(path.stem, out.decode(errors="replace"), manual=True, stopped=stopped)
         return {
             "ok": proc.returncode == 0,
             "stopped": stopped,
             "returncode": proc.returncode,
             "output": out.decode(errors="replace")[-4000:],
         }
+
+
+LOG_MAX_BYTES = int(os.environ.get("LOG_MAX_BYTES", str(1024 * 1024)))
+
+
+def _append_log(stem: str, output: str, manual: bool = False, stopped: bool = False):
+    """Ajoute la sortie d'un run au journal partagé de la config (best effort)."""
+    try:
+        LOG_DIR.mkdir(parents=True, exist_ok=True)
+        log_file = LOG_DIR / f"{stem}.log"
+        header = "run manuel" + (" (interrompu)" if stopped else "")
+        ts = datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M:%S")
+        with open(log_file, "a", encoding="utf-8") as f:
+            f.write(f"── {header} {ts} ─────────────────────────\n{output}")
+            if not output.endswith("\n"):
+                f.write("\n")
+        # Rotation simple : au-delà de LOG_MAX_BYTES on garde la moitié la plus récente
+        if log_file.stat().st_size > LOG_MAX_BYTES:
+            data = log_file.read_bytes()[-LOG_MAX_BYTES // 2:]
+            log_file.write_bytes(data)
+    except OSError:
+        pass
+
+
+@router.get("/logs/{name}")
+def get_logs(name: str, lines: int = 200):
+    """Renvoie les dernières lignes du journal d'une config."""
+    path = safe_config_path(name)
+    lines = max(1, min(lines, 2000))
+    log_file = LOG_DIR / f"{path.stem}.log"
+    if not log_file.is_file():
+        return {"content": "", "size": 0}
+    size = log_file.stat().st_size
+    with open(log_file, "rb") as f:
+        f.seek(max(0, size - 256 * 1024))
+        data = f.read().decode(errors="replace")
+    return {"content": "\n".join(data.splitlines()[-lines:]), "size": size}
 
 
 @router.post("/status/{name}/stop")
