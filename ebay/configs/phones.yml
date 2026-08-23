@@ -5,23 +5,33 @@ category:
 ebay_category:
   - 9355
 price_ranges:
-  - 300-550
-  - 450-700
-  - 280-450
-  - 350-550
-  - 200-330
-  - 450-700
-  - 180-300
-  - 200-320
-  - 120-220
-  - 80-160
-  - 400-850
+  - 300-620
+  - 450-780
+  - 280-500
+  - 350-620
+  - 200-370
+  - 450-780
+  - 180-340
+  - 200-360
+  - 120-250
+  - 80-180
+  - 400-950
+  - 250-500
+  - 100-200
+  - 450-750
+  - 250-430
+  - 600-1100
+  - 120-210
+  - 200-350
+  - 170-310
+  - 230-400
+  - 180-330
 ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[80..1600],priceCurrency:CAD'
 keywords:
   - s 23 ultra;galaxy s23 ultra;Samsung s23 ultra;Samsung galaxy s23 ultra
   - Fold 6;Vivo fold x3;Mi mix fold 4
-  - 's24;s 24;!fe;Pixel 8 Pro; Pixel 9'
-  - 'IPhone 15;!pro;!max;pixel 9 pro'
+  - 's24;s 24;!s24 fe;!s 24 fe;Pixel 8 Pro; Pixel 9'
+  - 'IPhone 15;!15 pro;pixel 9 pro'
   - '!Iphone 13 pro;Iphone 13;i phone 13'
   - S25; S 25;pixel 10
   - 'a55;a 55;!zte; Pixel 8'
@@ -29,6 +39,16 @@ keywords:
   - 'a53;a 53;!zte'
   - A52;Samsung A52s;A52s
   - '15 pro max;IPhone 16;S24 ultra;!16e'
+  - 'iphone 12 pro;i phone 12 pro'
+  - '!Iphone 12 pro;Iphone 12;i phone 12'
+  - 'iphone 14 pro;i phone 14 pro'
+  - '!Iphone 14 pro;Iphone 14;i phone 14'
+  - 'iphone 16 pro'
+  - '!s21 fe;!s 21 fe;s21;s 21;!zte'
+  - 's22 ultra;s 22 ultra'
+  - '!s22 ultra;s22;s 22;!zte'
+  - '!s23 fe;s23;s 23;!zte'
+  - 'z flip 5;z flip 6;flip 5;flip 6'
 page_count: 1
 get_description: False
 bot_blocklist:
@@ -36,7 +56,7 @@ bot_blocklist:
   - not working
   - parts only
   - sold as is
-  - cracked screen
+  - cracked
   - screen cracked
   - broken screen
   - screen damage

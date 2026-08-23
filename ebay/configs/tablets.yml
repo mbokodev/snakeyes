@@ -7,13 +7,13 @@ ebay_category:
 get_description: False
 keywords:
   - 'ipad 7;ipad 8;tab s6;!lite;!cover'
-  - 'ipad 9;ipad 2020;tab s7;!fe;!cover'
+  - 'ipad 9;ipad 2020;tab s7;!s7 fe;!s 7 fe;!cover'
   - 'ipad 10;ipad 2021;ipad air 3;tab s7 plus;tab s8;!cover;!10.2;!10,2'
   - 'ipad air 4;ipad 2022;ipad pro 10.5;!cover'
-  - 'ipad air 5;ipad air m1;ipad pro 11 2020;tab s8 ultra;tab s9;!cover;!fe;Tab s8 plus'
+  - 'ipad air 5;ipad air m1;ipad pro 11 2020;tab s8 ultra;tab s9;!cover;!s9 fe;!s 9 fe;Tab s8 plus'
   - 'ipad pro 11 2021;ipad pro m1;tab s9 plus;!cover'
   - 'ipad pro 12.9 2021;ipad pro m2;tab s9 ultra;!cover'
-  - 'ipad pro m4;ipad pro 2024;tab s10 ultra;tab s10;tab s 10 plus;tab s11;tab s 11;!lite;!fe;!cover'
+  - 'ipad pro m4;ipad pro 2024;tab s10 ultra;tab s10;tab s 10 plus;tab s11;tab s 11;!lite;!s10 fe;!s11 fe;!cover'
 page_count: 1
 price_ranges:
   - 50-110
@@ -35,7 +35,7 @@ bot_blocklist:
   - mdm
   - screen only
   - display only
-  - cracked screen
+  - cracked
   - broken screen
   - spare parts
   - Ipad pencil
