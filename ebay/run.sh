@@ -22,12 +22,16 @@ log_append() {
   fi
 }
 
-# Seed: copy the bundled configs on first start (empty shared dir)
+# Sync: copy any new bundled configs to shared dir (won't overwrite existing)
 mkdir -p "$CONFIG_DIR"
-if ! ls "$CONFIG_DIR"/*.yml >/dev/null 2>&1; then
-  echo "🌱 Seeding $CONFIG_DIR from bundled configs"
-  cp /app/configs/*.yml "$CONFIG_DIR"/
-fi
+for cfg in /app/configs/*.yml; do
+  [ -e "$cfg" ] || continue
+  dest="$CONFIG_DIR/$(basename "$cfg")"
+  if [ ! -e "$dest" ]; then
+    echo "🌱 Adding new config: $(basename "$cfg")"
+    cp "$cfg" "$dest"
+  fi
+done
 
 echo "🚀 eBay CA scraper — configs: $CONFIG_DIR | interval: ${INTERVAL}s"
 
