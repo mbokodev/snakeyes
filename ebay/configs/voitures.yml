@@ -1,0 +1,47 @@
+bot:
+  - Voitures
+
+keywords:
+  - 'Tucson;Elantra'
+  - 'Jetta'
+
+price_ranges:
+  - 1500-5000
+  - 2000-7000
+
+bot_blocklist:
+  - accident
+  - accidenté
+  - accidente
+  - salvage
+  - rebuilt
+  - flood
+  - inondation
+  - scrap
+  - ferraille
+  - for parts
+  - pour pièces
+  - pour pieces
+  - not running
+  - ne roule pas
+  - ne demarre pas
+  - does not start
+  - projet
+  - project
+
+block_lower_range:
+  - False
+
+# eBay (peu de voitures, mais on garde l'option)
+ebay_category: 6001
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[1500..8000],priceCurrency:CAD'
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec
+
+# Kijiji - Autos au Québec
+kijiji_url: https://www.kijiji.ca/b-autos-camions/quebec/c174l9001
+kijiji_price: 1500-8000
+
+enabled: true
