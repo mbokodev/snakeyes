@@ -32,13 +32,8 @@ bot_blocklist:
 block_lower_range:
   - False
 
-# eBay (peu de voitures, mais on garde l'option)
-ebay_category: 6001
-ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[1500..8000],priceCurrency:CAD'
-item_location_provinces:
-  - QC
-  - Quebec
-  - Québec
+# Pas d'eBay pour les voitures (Kijiji seulement)
+ebay_category: ''
 
 # Kijiji - Autos au Québec
 kijiji_url: https://www.kijiji.ca/b-autos-camions/quebec/c174l9001
