@@ -83,7 +83,7 @@ def fetch_listings(base_url: str, pages: int, price: str) -> list:
             .get("__APOLLO_STATE__", {})
         )
         for key, value in apollo.items():
-            if not key.startswith("StandardListing:"):
+            if not key.startswith(("StandardListing:", "AutosListing:")):
                 continue
             if value.get("adSource") == "TOP_AD":  # sponsored, repeated on every page
                 continue

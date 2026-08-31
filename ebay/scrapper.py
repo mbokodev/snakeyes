@@ -610,6 +610,12 @@ if __name__ == "__main__":
 
     print(f"📂 Loading config: {config_path}")
     config_dict = load_config(str(config_path))
+
+    # Opt-out of the eBay run (e.g. Kijiji-only configs like voitures)
+    if str(config_dict.get("ebay_enabled", True)).lower() in ("false", "no", "0"):
+        print("⏭️  eBay disabled for this config (ebay_enabled: false)")
+        sys.exit(0)
+
     config = build_config(config_dict, config_path)
 
     asyncio.run(run(config))

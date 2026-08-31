@@ -33,6 +33,7 @@ block_lower_range:
   - False
 
 # Pas d'eBay pour les voitures (Kijiji seulement)
+ebay_enabled: false
 ebay_category: ''
 
 # Kijiji - Autos au Québec
