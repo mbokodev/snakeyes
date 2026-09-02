@@ -15,7 +15,8 @@ SALE/
 │   │   ├── laptop.yml
 │   │   ├── phones.yml
 │   │   ├── tablets.yml
-│   │   └── konsole.yml
+│   │   ├── konsole.yml
+│   │   └── voitures.yml     # Kijiji seulement (ebay_enabled: false)
 │   └── cache/               # Cache des IDs déjà vus (évite les doublons)
 ├── webui/
 │   ├── backend/             # API FastAPI
@@ -35,7 +36,9 @@ SALE/
 
 ### Scraping multi-sources
 - **eBay Canada** : API officielle Browse v1 (OAuth2)
-- **Kijiji.ca** : Web scraping du JSON `__NEXT_DATA__`
+- **Kijiji.ca** : Web scraping du JSON `__NEXT_DATA__` (état Apollo)
+  - Catégories standards : annonces `StandardListing`
+  - Catégorie autos-camions (c174) : annonces `AutosListing` (structure identique : id, titre, description, prix en cents, location)
 
 ### Filtrage intelligent
 - Mots-clés par plage de prix (ex: RTX 3080 entre 700-1600$)
@@ -50,8 +53,9 @@ Chaque annonce reçoit un grade (1-5 étoiles) basé sur sa position dans la pla
 - 4-1 étoiles : quartiles de la plage
 
 ### Notifications Telegram
-- Un bot par catégorie (Laptops, Phones, Tablets, Consoles, Gadgets)
+- Un bot par catégorie (Laptops, Phones, Tablets, Consoles, Gadgets, Voitures)
 - Message formaté : titre, prix, grade, mot-clé matchant, lien
+- Un token vide désactive silencieusement les notifications du bot (warning `Bot 'X' not found in BOT_MAPPING` dans les logs)
 
 ### Interface Web (WebUI)
 - Authentification HTTP Basic
@@ -89,6 +93,7 @@ TELEGRAM_TOKEN_CONSOLES=bot_token_consoles
 TELEGRAM_TOKEN_PHONES=bot_token_phones
 TELEGRAM_TOKEN_TABLETS=bot_token_tablets
 TELEGRAM_TOKEN_GADGETS=bot_token_gadgets
+TELEGRAM_TOKEN_VOITURES=bot_token_voitures
 
 # WebUI Auth
 UI_USERNAME=admin
@@ -134,6 +139,7 @@ bot_blocklist:
   - défectueux
 
 # eBay
+ebay_enabled: true     # false = config Kijiji seulement, skip le run eBay
 ebay_category: 175672  # Laptops
 ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA'
 item_location_provinces: []  # Vide = tout le Canada
@@ -194,7 +200,7 @@ curl -u admin:secret -X POST http://localhost:8000/api/status/laptop.yml/run
 
 1. `run.sh` boucle toutes les `SCRAPE_INTERVAL` secondes
 2. Pour chaque config `.yml` avec `enabled: true` :
-   - Lance `scrapper.py` (eBay)
+   - Lance `scrapper.py` (eBay) — sauf si `ebay_enabled: false`
    - Lance `kijiji_scrapper.py` (si `kijiji_url` défini)
 3. Chaque scraper :
    - Charge le cache des IDs déjà vus
@@ -254,6 +260,31 @@ python kijiji_scrapper.py configs/laptop.yml
 Le projet est configuré pour Dokploy avec Traefik :
 - Le service `webui` expose le port 8000 sur le réseau `dokploy-network`
 - Pas de publication de port sur l'hôte (évite les conflits)
+
+### Synchronisation des configs (important)
+
+Les configs actives vivent sur le volume partagé (`/data/configs`), pas dans l'image.
+Au démarrage, `run.sh` copie uniquement les configs **nouvelles** — il n'écrase
+jamais une config existante (pour préserver les éditions faites via le webui).
+
+Conséquence : **modifier un YAML dans git ne met pas à jour le serveur.**
+Pour propager une modification de config existante, deux options :
+- L'éditer via le webui (recommandé), puis reporter le changement dans git
+- La copier manuellement sur le volume :
+  ```bash
+  cat ebay/configs/voitures.yml | ssh dokploy \
+    "docker exec -i <container-scraper> sh -c 'cat > /data/configs/voitures.yml'"
+  ```
+
+Les changements de **code** (scrapers, webui), eux, nécessitent un redéploiement
+Dokploy (rebuild de l'image). Les tokens Telegram se gèrent dans l'onglet
+Environment de Dokploy — un token manquant y est remplacé par une chaîne vide.
+
+### Config Kijiji seulement (ex : voitures)
+
+Les voitures ne se vendent pas sur eBay CA : `voitures.yml` définit
+`ebay_enabled: false` pour skipper le run eBay, et seul le scraper Kijiji
+tourne (catégorie autos-camions, annonces `AutosListing`).
 
 ## Licence
 
