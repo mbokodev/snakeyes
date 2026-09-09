@@ -1,0 +1,110 @@
+bot:
+  - TV
+
+keywords:
+  # 55" 4K — normalement 300-500$, on vise <120$
+  - '55;4k;!mount;!stand only;!remote only'
+  - '55;UHD;!mount;!stand only'
+  - '55;smart tv;!mount'
+
+  # 65" 4K — normalement 500-900$, on vise <200$
+  - '65;4k;!mount;!stand only;!remote only'
+  - '65;UHD;!mount;!stand only'
+  - '65;smart tv;!mount'
+
+  # 75"+ grandes tailles — normalement 800-1500$, on vise <350$
+  - '75;4k;!mount;!stand only'
+  - '75;UHD;!mount'
+  - '85;4k;!mount'
+  - '85;UHD;!mount'
+
+  # OLED — normalement 1000-3000$, on vise <400$
+  - 'OLED;55;!monitor;!burn'
+  - 'OLED;65;!monitor;!burn'
+  - 'OLED;LG C;!burn'
+  - 'OLED;LG G;!burn'
+
+  # QLED/Neo QLED Samsung — normalement 600-1500$, on vise <250$
+  - 'QLED;55;!monitor'
+  - 'QLED;65;!monitor'
+  - 'Neo QLED;!monitor'
+
+  # Marques premium bradées
+  - 'Sony Bravia;4k'
+  - 'LG NanoCell'
+  - 'Samsung Crystal;65'
+  - 'Samsung Crystal;55'
+  - 'TCL;65;4k'
+  - 'Hisense;65;4k'
+
+price_ranges:
+  # 55" 4K
+  - 40-120
+  - 40-120
+  - 40-100
+  # 65" 4K
+  - 60-200
+  - 60-200
+  - 50-180
+  # 75"+ grandes
+  - 100-350
+  - 100-350
+  - 150-450
+  - 150-450
+  # OLED
+  - 150-400
+  - 200-500
+  - 200-550
+  - 250-600
+  # QLED
+  - 80-250
+  - 100-300
+  - 150-400
+  # Marques premium
+  - 80-280
+  - 60-200
+  - 60-180
+  - 50-150
+  - 50-180
+  - 50-180
+
+bot_blocklist:
+  - for parts
+  - pour pièces
+  - pour pieces
+  - broken
+  - cracked
+  - fissure
+  - fêlure
+  - dead pixel
+  - pixel mort
+  - lignes
+  - lines on screen
+  - no picture
+  - pas d'image
+  - no power
+  - ne s'allume pas
+  - water damage
+  - burn in
+  - image brulée
+  - screen damage
+  - écran brisé
+  - defective
+  - défectueux
+  - not working
+  - ne fonctionne pas
+
+block_lower_range:
+  - False
+
+ebay_category: 11071
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[30..600],priceCurrency:CAD'
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec
+
+kijiji_url: https://www.kijiji.ca/b-tv/grand-montreal/c15093l80002
+kijiji_price: 30-600
+
+enabled: true

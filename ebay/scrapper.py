@@ -44,6 +44,7 @@ BOT_MAPPING = {
     "Tablets":  {"token": os.environ.get("TELEGRAM_TOKEN_TABLETS", ""),  "chat_id": TELEGRAM_CHAT_ID},
     "Gadgets":  {"token": os.environ.get("TELEGRAM_TOKEN_GADGETS", ""),  "chat_id": TELEGRAM_CHAT_ID},
     "Voitures": {"token": os.environ.get("TELEGRAM_TOKEN_VOITURES", ""), "chat_id": TELEGRAM_CHAT_ID},
+    "TV":       {"token": os.environ.get("TELEGRAM_TOKEN_TV", ""),       "chat_id": TELEGRAM_CHAT_ID},
 }
 
 # Default eBay search filters (can be overridden per-config via ebay_filters key)
