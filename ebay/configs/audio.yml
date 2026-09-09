@@ -31,6 +31,7 @@ keywords:
   # Sony WH — les rois du flip
   - 'WH-1000XM4;!ear pad;!cushion only;!cable only'
   - 'WH-1000XM5;!ear pad;!cushion only'
+  - 'WH-1000XM6;!ear pad;!cushion only'
   - 'Sony WH-1000;!ear pad'
 
   # Bose casques
@@ -74,6 +75,7 @@ price_ranges:
   # Sony casques
   - 100-180
   - 150-250
+  - 180-300
   - 80-160
   # Bose casques
   - 100-180
