@@ -1,0 +1,111 @@
+bot:
+  - Gadgets
+
+keywords:
+  # 27" 1440p 144Hz+ gaming — normalement 300-450$, on vise <200$
+  - '1440p;144hz;27;!panel only;!cable;!arm;!stand only'
+  - 'QHD;144hz;!panel only;!cable'
+  - '165hz;1440;!panel only'
+
+  # 240Hz+ esports — normalement 400-600$, on vise <280$
+  - '240hz;!panel only;!cable'
+  - '360hz'
+
+  # 4K pour dev — normalement 350-600$, on vise <220$
+  - '4k;27;monitor;!TV;!panel only;!tuner'
+  - '4k;32;!TV;!panel only;!tuner'
+  - 'UHD;27;!TV;!panel only'
+
+  # Ultrawide productivité — normalement 400-900$, on vise <300$
+  - 'ultrawide;34;!panel only'
+  - '3440x1440;!panel only'
+  - 'ultrawide;38'
+
+  # Panels premium — IPS/OLED/Mini LED
+  - 'IPS;27;144hz;!panel only'
+  - 'IPS;4k;!TV;!panel only'
+  - 'Nano IPS;!panel only'
+  - 'OLED;27;monitor;!TV'
+  - 'OLED;gaming;!TV'
+  - 'Mini LED;monitor;!TV'
+  - 'QD-OLED;!TV'
+
+  # HDR haut de gamme
+  - 'HDR600;!TV'
+  - 'HDR1000;!TV;!panel only'
+
+  # Modèles spécifiques recherchés
+  - 'LG 27GL;LG 27GP;LG 27GN'
+  - 'Dell S2722;Dell S2721'
+  - 'ASUS VG27;ASUS PG27'
+  - 'Samsung Odyssey G7;Odyssey G9'
+
+price_ranges:
+  # 1440p 144Hz gaming
+  - 80-200
+  - 80-200
+  - 90-220
+  # 240Hz+ esports
+  - 130-280
+  - 180-400
+  # 4K dev
+  - 100-220
+  - 120-280
+  - 100-220
+  # Ultrawide
+  - 120-300
+  - 140-320
+  - 200-480
+  # Panels premium IPS/OLED/Mini LED
+  - 90-220
+  - 120-280
+  - 150-350
+  - 280-500
+  - 300-550
+  - 250-500
+  - 350-700
+  # HDR
+  - 120-300
+  - 200-450
+  # Modèles spécifiques
+  - 80-220
+  - 100-250
+  - 90-230
+  - 180-450
+
+bot_blocklist:
+  - for parts
+  - pour pièces
+  - pour pieces
+  - broken
+  - cracked
+  - dead pixel
+  - pixel mort
+  - no power
+  - ne s'allume pas
+  - water damage
+  - burn in
+  - brulure
+  - défectueux
+  - defective
+  - not working
+  - ne fonctionne pas
+  - scratched screen
+  - screen damage
+
+block_lower_range:
+  - False
+
+ebay_category: 80053
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[50..600],priceCurrency:CAD'
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec
+  - ON
+  - Ontario
+
+kijiji_url: https://www.kijiji.ca/b-moniteurs/quebec/c788l9001
+kijiji_price: 50-600
+
+enabled: true
