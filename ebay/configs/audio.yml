@@ -1,0 +1,125 @@
+bot:
+  - Gadgets
+
+keywords:
+  # AirPods — très liquide, gens revendent vite après upgrade/cadeau
+  - 'AirPods Pro 2;!case only;!ear tips'
+  - 'AirPods Pro;!Pro 2;!case only;!ear tips'
+  - 'AirPods 3;!case only'
+  - 'AirPods Max;!case only;!cushion'
+
+  # Galaxy Buds Samsung
+  - 'Galaxy Buds Pro;!case only'
+  - 'Galaxy Buds 2 Pro;!case only'
+  - 'Galaxy Buds FE;!case only'
+
+  # Sony earbuds — top tier
+  - 'WF-1000XM4;!case only;!ear tips'
+  - 'WF-1000XM5;!case only'
+  - 'Sony WF;!case only'
+
+  # Bose earbuds
+  - 'Bose QuietComfort earbuds;!case only'
+  - 'Bose Ultra earbuds;!case only'
+
+  # Jabra Elite
+  - 'Jabra Elite 85;!case only'
+  - 'Jabra Elite 75;!case only'
+
+  # === CASQUES AUDIO ===
+
+  # Sony WH — les rois du flip
+  - 'WH-1000XM4;!ear pad;!cushion only;!cable only'
+  - 'WH-1000XM5;!ear pad;!cushion only'
+  - 'Sony WH-1000;!ear pad'
+
+  # Bose casques
+  - 'Bose 700;!ear pad;!cushion only'
+  - 'Bose QuietComfort 45;QC45;!ear pad'
+  - 'Bose QuietComfort 35;QC35;!ear pad'
+  - 'Bose QuietComfort Ultra;!ear pad'
+
+  # Beats
+  - 'Beats Studio Pro;!case only'
+  - 'Beats Studio 3;!ear pad;!cushion'
+
+  # Sennheiser
+  - 'Sennheiser HD 600;HD600;!cable only;!ear pad'
+  - 'Sennheiser HD 650;HD650;!cable only'
+  - 'Sennheiser Momentum;!ear pad'
+
+  # Apple
+  - 'AirPods Max;!cushion only;!case only'
+
+price_ranges:
+  # AirPods
+  - 100-180
+  - 60-120
+  - 50-100
+  - 250-400
+  # Galaxy Buds
+  - 40-90
+  - 60-120
+  - 30-70
+  # Sony earbuds
+  - 70-140
+  - 100-180
+  - 50-110
+  # Bose earbuds
+  - 60-130
+  - 100-180
+  # Jabra
+  - 40-90
+  - 30-70
+  # Sony casques
+  - 100-180
+  - 150-250
+  - 80-160
+  # Bose casques
+  - 100-180
+  - 80-160
+  - 60-120
+  - 150-280
+  # Beats
+  - 100-180
+  - 50-100
+  # Sennheiser
+  - 100-180
+  - 120-200
+  - 80-160
+  # AirPods Max (dupe intentionnel, prix diff)
+  - 280-420
+
+bot_blocklist:
+  - for parts
+  - pour pièces
+  - broken
+  - not working
+  - ne fonctionne pas
+  - one side
+  - un côté
+  - no sound
+  - pas de son
+  - crackling
+  - water damage
+  - defective
+  - défectueux
+  - missing
+  - lost
+
+block_lower_range:
+  - False
+
+ebay_category: 112529
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[25..450],priceCurrency:CAD'
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec
+  - ON
+  - Ontario
+
+kijiji_url: https://www.kijiji.ca/b-ecouteurs/grand-montreal/c767l80002
+kijiji_price: 25-450
+
+enabled: true

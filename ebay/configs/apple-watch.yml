@@ -1,0 +1,70 @@
+bot:
+  - Gadgets
+
+keywords:
+  # Series 4/5 — normalement 120-180$, on vise <90$
+  - 'Apple Watch;Series 4;!band only;!strap;!charger only;!broken'
+  - 'Apple Watch;Series 5;!band only;!strap;!charger only;!broken'
+
+  # Series 6/7 — normalement 180-280$, on vise <140$
+  - 'Apple Watch;Series 6;!band only;!strap;!charger only'
+  - 'Apple Watch;Series 7;!band only;!strap;!charger only'
+
+  # Series 8/9 — normalement 300-450$, on vise <220$
+  - 'Apple Watch;Series 8;!band only;!strap;!charger only'
+  - 'Apple Watch;Series 9;!band only;!strap;!charger only'
+
+  # SE — normalement 150-250$, on vise <100$
+  - 'Apple Watch SE;!band only;!strap;!charger only'
+  - 'Apple Watch;SE 2;!band only;!strap'
+
+  # Ultra — normalement 550-900$, on vise <400$
+  - 'Apple Watch Ultra;!band only;!strap;!charger only'
+  - 'Apple Watch Ultra 2;!band only;!strap'
+
+price_ranges:
+  # Series 4/5
+  - 40-90
+  - 50-100
+  # Series 6/7
+  - 70-140
+  - 90-160
+  # Series 8/9
+  - 120-220
+  - 150-280
+  # SE
+  - 50-100
+  - 70-130
+  # Ultra
+  - 250-400
+  - 300-480
+
+bot_blocklist:
+  - for parts
+  - pour pièces
+  - cracked
+  - broken screen
+  - icloud locked
+  - locked
+  - blacklisted
+  - water damage
+  - not working
+  - ne fonctionne pas
+  - activation lock
+
+block_lower_range:
+  - False
+
+ebay_category: 178893
+ebay_filters: 'buyingOptions:{FIXED_PRICE},itemLocationCountry:CA,deliveryCountry:CA,price:[30..500],priceCurrency:CAD'
+item_location_provinces:
+  - QC
+  - Quebec
+  - Québec
+  - ON
+  - Ontario
+
+kijiji_url: https://www.kijiji.ca/b-bijoux-montres/grand-montreal/apple-watch/k0c133l80002
+kijiji_price: 30-500
+
+enabled: true
