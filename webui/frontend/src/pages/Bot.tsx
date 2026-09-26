@@ -281,7 +281,7 @@ export default function Bot() {
         <div>
           <h2 style={{ margin: 0, fontSize: '1.3rem', fontWeight: 700 }}>Configurations des bots</h2>
           <p style={{ margin: '3px 0 0', color: 'var(--muted)', fontSize: '0.85rem' }}>
-            Gérer et configurer les bots du scraper eBay
+            Gérer et configurer les bots du GiGa Scraper
           </p>
         </div>
       </div>

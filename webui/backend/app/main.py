@@ -1,4 +1,4 @@
-"""eBay CA scraper — WebUI (API + SPA statique), protégée par HTTP Basic."""
+"""GiGa Scraper — WebUI (API + SPA statique), protégée par HTTP Basic."""
 import os
 from pathlib import Path
 

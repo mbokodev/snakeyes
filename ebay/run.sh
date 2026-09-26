@@ -33,7 +33,7 @@ for cfg in /app/configs/*.yml; do
   fi
 done
 
-echo "🚀 eBay CA scraper — configs: $CONFIG_DIR | interval: ${INTERVAL}s"
+echo "🚀 GiGa Scraper — configs: $CONFIG_DIR | interval: ${INTERVAL}s"
 
 while true; do
   for cfg in "$CONFIG_DIR"/*.yml; do
