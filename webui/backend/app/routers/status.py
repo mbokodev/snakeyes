@@ -15,6 +15,7 @@ from ..files import (
     CACHE_DIR,
     CONFIG_DIR,
     LOG_DIR,
+    SOURCES_FILE,
     STATUS_DIR,
     atomic_write,
     dump_yaml,
@@ -179,6 +180,42 @@ async def stop_run(name: str):
 
 class EnabledBody(BaseModel):
     enabled: bool
+
+
+SOURCES = ("ebay", "kijiji")
+
+
+def _read_sources() -> dict[str, bool]:
+    try:
+        data = json.loads(SOURCES_FILE.read_text())
+    except (OSError, ValueError):
+        data = {}
+    if not isinstance(data, dict):
+        data = {}
+    return {s: bool(data.get(s, True)) for s in SOURCES}
+
+
+@router.get("/sources")
+def get_sources() -> dict[str, bool]:
+    return _read_sources()
+
+
+@router.put("/sources/{source}")
+def set_source(source: str, body: EnabledBody):
+    """Active/désactive une source globalement. Les scrapers relisent le fichier
+    à chaque lancement et avant chaque envoi Telegram : effet immédiat."""
+    if source not in SOURCES:
+        raise HTTPException(status_code=404, detail=f"Source inconnue : {source}")
+    sources = _read_sources()
+    sources[source] = body.enabled
+    atomic_write(SOURCES_FILE, json.dumps(sources))
+    # Les runs manuels (« Lancer maintenant ») sont des runs eBay : on les coupe.
+    if source == "ebay" and not body.enabled:
+        for stem, proc in list(_procs.items()):
+            if proc.returncode is None:
+                _stopped.add(stem)
+                proc.terminate()
+    return sources
 
 
 @router.put("/status/{name}/enabled")

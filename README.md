@@ -64,6 +64,7 @@ Chaque annonce reçoit un grade (1-5 étoiles) basé sur sa position dans la pla
 - Visualisation des logs
 - Déclenchement manuel des runs
 - Activation/désactivation par config
+- Activation/désactivation globale des sources (eBay, Kijiji) : stocké dans `/data/sources.json`, relu par les scrapers à chaque lancement et avant chaque envoi Telegram → effet immédiat. Couper eBay interrompt aussi un « Lancer maintenant » en cours
 
 ## Installation
 

@@ -24,6 +24,7 @@ from scrapper import (
     acquire_lock,
     release_lock,
     escape_markdown_v2,
+    source_enabled,
 )
 
 HEADERS = {
@@ -205,7 +206,9 @@ def run(config: ScrapperConfig, kijiji_url: str, kijiji_price: str, kijiji_pages
         # Save cache before sending (same crash-safety rationale as the eBay run).
         save_cache(cache_file, current_ids)
 
-        if out:
+        if out and not source_enabled("kijiji"):
+            print(f"⏭️  [kijiji] Kijiji disabled during run — {len(out)} matches not sent")
+        elif out:
             print(f"[kijiji] Found {len(out)} matching items.")
             send_telegram_kijiji(config, out)
         else:
@@ -230,6 +233,9 @@ if __name__ == "__main__":
     kijiji_url = str(config_dict.get("kijiji_url") or "").strip()
     if not kijiji_url:
         sys.exit(0)  # config not opted in to Kijiji — nothing to do
+    if not source_enabled("kijiji"):
+        print("⏭️  Kijiji source disabled (web UI)")
+        sys.exit(0)
 
     kijiji_price = str(config_dict.get("kijiji_price") or "").strip()
     kijiji_pages = int(config_dict.get("kijiji_pages") or 1)

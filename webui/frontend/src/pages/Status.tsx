@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Activity, Play, RefreshCcw, Clock, Database, CheckCircle2, XCircle, Loader2, Square, Power, FileText } from 'lucide-react'
-import { getStatus, runNow, stopRun, setEnabled, getLogs, StatusEntry } from '../lib/api'
+import { getStatus, runNow, stopRun, setEnabled, getLogs, StatusEntry, getSources, setSource, Source, Sources } from '../lib/api'
 import { toast } from '../lib/toast'
 
 function timeAgo(iso: string | null): string {
@@ -18,6 +18,8 @@ function formatSize(bytes: number | null): string {
   if (bytes < 1024) return `${bytes} o`
   return `${(bytes / 1024).toFixed(1)} Ko`
 }
+
+const SOURCE_LABELS: Record<Source, string> = { ebay: 'eBay', kijiji: 'Kijiji' }
 
 const badgeStyle = (color: string, bg: string): React.CSSProperties => ({
   display: 'inline-flex',
@@ -39,11 +41,14 @@ export default function Status() {
   const [lastOutput, setLastOutput] = useState<{ name: string; output: string } | null>(null)
   const [logs, setLogs] = useState<{ name: string; content: string } | null>(null)
   const [logsLoading, setLogsLoading] = useState(false)
+  const [sources, setSources] = useState<Sources | null>(null)
+  const [togglingSource, setTogglingSource] = useState<Source | null>(null)
 
   const fetchStatus = async () => {
     try {
-      const res = await getStatus()
+      const [res, src] = await Promise.all([getStatus(), getSources()])
       setEntries(res.data)
+      setSources(src.data)
     } catch {
       // silencieux pendant le polling
     } finally {
@@ -102,6 +107,24 @@ export default function Status() {
     else fetchLogs(name)
   }
 
+  const handleSourceToggle = async (source: Source, enabled: boolean) => {
+    setTogglingSource(source)
+    try {
+      const res = await setSource(source, enabled)
+      setSources(res.data)
+      toast(
+        enabled
+          ? `${SOURCE_LABELS[source]} activé`
+          : `${SOURCE_LABELS[source]} désactivé — plus aucun scraping ni notification`,
+        'success',
+      )
+    } catch (err: any) {
+      toast(err?.response?.data?.detail || 'Erreur lors du changement', 'error')
+    } finally {
+      setTogglingSource(null)
+    }
+  }
+
   const handleToggle = async (name: string, enabled: boolean) => {
     setToggling(name)
     try {
@@ -154,6 +177,43 @@ export default function Status() {
           <RefreshCcw size={15} /> Rafraîchir
         </button>
       </div>
+
+      {/* Sources globales */}
+      {sources && (
+        <div className="card" style={{
+          padding: '14px 18px', background: 'var(--surface-2)', marginBottom: 14,
+          display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+        }}>
+          <span style={{ fontWeight: 700, fontSize: 14 }}>Sources</span>
+          <span style={{ fontSize: 12.5, color: 'var(--muted)' }}>
+            Effet immédiat sur toutes les configs
+          </span>
+          <div style={{ flex: 1 }} />
+          {(Object.keys(SOURCE_LABELS) as Source[]).map((s) => {
+            const on = sources[s]
+            const busy = togglingSource === s
+            return (
+              <button
+                key={s}
+                onClick={() => handleSourceToggle(s, !on)}
+                disabled={busy}
+                title={on ? `Cliquer pour désactiver ${SOURCE_LABELS[s]}` : `Cliquer pour activer ${SOURCE_LABELS[s]}`}
+                style={{
+                  ...(on
+                    ? badgeStyle('var(--green)', 'rgba(52,211,153,0.12)')
+                    : badgeStyle('var(--muted)', 'rgba(156,163,175,0.12)')),
+                  padding: '6px 14px', fontSize: 13,
+                  border: 'none',
+                  cursor: busy ? 'wait' : 'pointer',
+                }}
+              >
+                {busy ? <Loader2 size={13} className="spin" /> : <Power size={13} />}
+                {SOURCE_LABELS[s]} {on ? 'actif' : 'désactivé'}
+              </button>
+            )
+          })}
+        </div>
+      )}
 
       {loading && entries.length === 0 ? (
         <div style={{ color: 'var(--muted)', padding: 20, textAlign: 'center' }}>Chargement...</div>

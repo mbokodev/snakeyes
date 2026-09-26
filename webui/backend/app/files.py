@@ -12,6 +12,7 @@ CONFIG_DIR = Path(os.environ.get("CONFIG_DIR", str(DATA_DIR / "configs")))
 STATUS_DIR = Path(os.environ.get("STATUS_DIR", str(DATA_DIR / "status")))
 CACHE_DIR = DATA_DIR / "cache"
 LOG_DIR = Path(os.environ.get("LOG_DIR", str(DATA_DIR / "logs")))
+SOURCES_FILE = DATA_DIR / "sources.json"  # lu par scrapper.py / kijiji_scrapper.py
 
 _NAME_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 

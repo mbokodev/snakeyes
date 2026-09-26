@@ -67,6 +67,12 @@ export const getLogs = (name: string, lines = 200) =>
     'GET',
     `/api/logs/${encodeURIComponent(name)}?lines=${lines}`,
   )
+export type Source = 'ebay' | 'kijiji'
+export type Sources = Record<Source, boolean>
+
+export const getSources = () => request<Sources>('GET', '/api/sources')
+export const setSource = (source: Source, enabled: boolean) =>
+  request<Sources>('PUT', `/api/sources/${source}`, { enabled })
 export const setEnabled = (name: string, enabled: boolean) =>
   request<{ name: string; enabled: boolean }>(
     'PUT',

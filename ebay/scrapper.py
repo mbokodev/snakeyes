@@ -247,6 +247,21 @@ def save_cache(cache_file: Path, fetched_ids: list):
                 pass
 
 
+SOURCES_FILE = DATA_DIR / "sources.json"
+
+
+def source_enabled(source: str) -> bool:
+    """Global on/off switch per source ("ebay", "kijiji"), toggled from the web UI.
+
+    Read fresh on every call so a toggle takes effect on the very next check.
+    Missing/unreadable file = everything enabled.
+    """
+    try:
+        return bool(json.loads(SOURCES_FILE.read_text()).get(source, True))
+    except (OSError, ValueError, AttributeError):
+        return True
+
+
 def write_status(config: ScrapperConfig, payload: dict):
     """Write per-config run status for the web UI (atomic, best effort)."""
     if not config.config_path:
@@ -576,7 +591,9 @@ async def run(config: ScrapperConfig):
             save_cache(config.cache_file, current_ids)
 
             stats["matched"] = len(out)
-            if out:
+            if out and not source_enabled("ebay"):
+                print(f"⏭️  eBay disabled during run — {len(out)} matches not sent")
+            elif out:
                 print(f"Found {len(out)} matching items.")
                 send_telegram(config, out)
             else:
@@ -608,6 +625,10 @@ if __name__ == "__main__":
     if not config_path.exists():
         print(f"❌ Config file not found: {config_path}")
         sys.exit(1)
+
+    if not source_enabled("ebay"):
+        print("⏭️  eBay source disabled (web UI)")
+        sys.exit(0)
 
     print(f"📂 Loading config: {config_path}")
     config_dict = load_config(str(config_path))
