@@ -19,7 +19,7 @@ function formatSize(bytes: number | null): string {
   return `${(bytes / 1024).toFixed(1)} Ko`
 }
 
-const SOURCE_LABELS: Record<Source, string> = { ebay: 'eBay', kijiji: 'Kijiji' }
+const SOURCE_LABELS: Record<Source, string> = { ebay: 'eBay', kijiji: 'Kijiji', facebook: 'Facebook' }
 
 const badgeStyle = (color: string, bg: string): React.CSSProperties => ({
   display: 'inline-flex',

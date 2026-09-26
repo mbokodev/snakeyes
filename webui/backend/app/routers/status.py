@@ -182,7 +182,7 @@ class EnabledBody(BaseModel):
     enabled: bool
 
 
-SOURCES = ("ebay", "kijiji")
+SOURCES = ("ebay", "kijiji", "facebook")
 
 
 def _read_sources() -> dict[str, bool]:

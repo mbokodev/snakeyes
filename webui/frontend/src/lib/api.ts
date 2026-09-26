@@ -67,7 +67,7 @@ export const getLogs = (name: string, lines = 200) =>
     'GET',
     `/api/logs/${encodeURIComponent(name)}?lines=${lines}`,
   )
-export type Source = 'ebay' | 'kijiji'
+export type Source = 'ebay' | 'kijiji' | 'facebook'
 export type Sources = Record<Source, boolean>
 
 export const getSources = () => request<Sources>('GET', '/api/sources')

@@ -1,6 +1,6 @@
 # SALE - eBay & Kijiji Deal Finder
 
-Système automatisé de scraping pour détecter les bonnes affaires sur **eBay Canada** et **Kijiji.ca**, avec notifications Telegram en temps réel.
+Système automatisé de scraping pour détecter les bonnes affaires sur **eBay Canada**, **Kijiji.ca** et **Facebook Marketplace**, avec notifications Telegram en temps réel.
 
 ## Architecture
 
@@ -9,6 +9,7 @@ SALE/
 ├── ebay/
 │   ├── scrapper.py          # Scraper eBay (API Browse v1)
 │   ├── kijiji_scrapper.py   # Scraper Kijiji (web scraping)
+│   ├── facebook_scrapper.py # Scraper Facebook Marketplace (sans compte)
 │   ├── ebay_auth.py         # Authentification OAuth2 eBay
 │   ├── run.sh               # Script de scheduling (boucle infinie)
 │   ├── configs/             # Configurations YAML par catégorie
@@ -16,7 +17,7 @@ SALE/
 │   │   ├── phones.yml
 │   │   ├── tablets.yml
 │   │   ├── konsole.yml
-│   │   └── voitures.yml     # Kijiji seulement (ebay_enabled: false)
+│   │   └── voitures.yml     # Kijiji + Facebook (ebay_enabled: false)
 │   └── cache/               # Cache des IDs déjà vus (évite les doublons)
 ├── webui/
 │   ├── backend/             # API FastAPI
@@ -39,6 +40,10 @@ SALE/
 - **Kijiji.ca** : Web scraping du JSON `__NEXT_DATA__` (état Apollo)
   - Catégories standards : annonces `StandardListing`
   - Catégorie autos-camions (c174) : annonces `AutosListing` (structure identique : id, titre, description, prix en cents, location)
+- **Facebook Marketplace** : page de recherche publique, sans compte (JSON relay embarqué)
+  - 1 requête par mot-clé × ville (~24 annonces les plus récentes, rayon ~65 km)
+  - Titre seulement (pas de description) : la blocklist ne s'applique qu'au titre
+  - Auto-limité par `facebook_interval` (défaut 15 min) pour éviter les blocages
 
 ### Filtrage intelligent
 - Mots-clés par plage de prix (ex: RTX 3080 entre 700-1600$)
@@ -64,7 +69,7 @@ Chaque annonce reçoit un grade (1-5 étoiles) basé sur sa position dans la pla
 - Visualisation des logs
 - Déclenchement manuel des runs
 - Activation/désactivation par config
-- Activation/désactivation globale des sources (eBay, Kijiji) : stocké dans `/data/sources.json`, relu par les scrapers à chaque lancement et avant chaque envoi Telegram → effet immédiat. Couper eBay interrompt aussi un « Lancer maintenant » en cours
+- Activation/désactivation globale des sources (eBay, Kijiji, Facebook) : stocké dans `/data/sources.json`, relu par les scrapers à chaque lancement et avant chaque envoi Telegram → effet immédiat. Couper eBay interrompt aussi un « Lancer maintenant » en cours
 
 ## Installation
 
@@ -149,6 +154,12 @@ item_location_provinces: []  # Vide = tout le Canada
 kijiji_url: https://www.kijiji.ca/b-laptops/quebec/c773l9001
 kijiji_price: 200-4000
 
+# Facebook Marketplace (optionnel)
+facebook_queries: [macbook, thinkpad]   # termes de recherche Facebook
+facebook_locations: [montreal, quebec]  # slug ville ou id numérique (302594032926496 = Saguenay)
+facebook_price: 200-4000
+facebook_interval: 900                  # secondes min entre deux passages
+
 # Activer/désactiver
 enabled: true
 ```
@@ -203,6 +214,7 @@ curl -u admin:secret -X POST http://localhost:8000/api/status/laptop.yml/run
 2. Pour chaque config `.yml` avec `enabled: true` :
    - Lance `scrapper.py` (eBay) — sauf si `ebay_enabled: false`
    - Lance `kijiji_scrapper.py` (si `kijiji_url` défini)
+   - Lance `facebook_scrapper.py` (si `facebook_queries` + `facebook_locations` définis, au plus une fois par `facebook_interval`)
 3. Chaque scraper :
    - Charge le cache des IDs déjà vus
    - Récupère les nouvelles annonces
