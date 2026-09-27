@@ -8,10 +8,14 @@
 # request (~24 newest listings, radius ~65 km around the city).
 # Optional keys: `facebook_price` ("min-max", in CAD), `facebook_interval`
 # (minimum seconds between two Facebook runs of this config, default 900).
+# Facebook blocks most datacenter IPs when logged out: set the FACEBOOK_PROXY
+# env var (e.g. http://user:pass@host:port, ideally a residential proxy) to
+# route only the Facebook requests through it.
 # Keywords / price_ranges / bot_blocklist / bot are shared with the eBay run.
 # Facebook only exposes the title on the search page: the blocklist is applied
 # to the title alone.
 import json
+import os
 import random
 import re
 import sys
@@ -49,6 +53,10 @@ HEADERS = {
 }
 
 JSON_SCRIPT_RE = re.compile(r'<script type="application/json"[^>]*>(.*?)</script>', re.S)
+TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.S | re.I)
+
+FACEBOOK_PROXY = os.environ.get("FACEBOOK_PROXY", "").strip()
+PROXIES = {"http": FACEBOOK_PROXY, "https": FACEBOOK_PROXY} if FACEBOOK_PROXY else None
 
 DEFAULT_INTERVAL = 900  # 15 min — keeps the request rate low to avoid blocks
 
@@ -81,7 +89,7 @@ def _collect_listings(node, out: list):
 
 def fetch_search(url: str) -> list:
     """Fetch one Marketplace search page and return its listings."""
-    resp = requests.get(url, headers=HEADERS, timeout=25)
+    resp = requests.get(url, headers=HEADERS, timeout=25, proxies=PROXIES)
     resp.raise_for_status()
     found = []
     for m in JSON_SCRIPT_RE.finditer(resp.text):
@@ -92,7 +100,13 @@ def fetch_search(url: str) -> list:
         except ValueError:
             continue
     if not found and "marketplace_search" not in resp.text:
-        raise RuntimeError(f"No Marketplace data on {url} — possible login wall / bot challenge")
+        title = TITLE_RE.search(resp.text)
+        title = " ".join(title.group(1).split())[:80] if title else "?"
+        raise RuntimeError(
+            f"No Marketplace data (HTTP {resp.status_code}, {len(resp.text)} bytes, "
+            f"landed on {resp.url}, title: {title!r}) — login wall / bot challenge, "
+            f"Facebook likely blocks this IP{'' if PROXIES else ' (no FACEBOOK_PROXY set)'}"
+        )
     return found
 
 
@@ -302,4 +316,8 @@ if __name__ == "__main__":
     price = str(config_dict.get("facebook_price") or "").strip()
 
     config = build_config(config_dict, config_path)
-    run(config, queries, locations, price)
+    try:
+        run(config, queries, locations, price)
+    except (requests.RequestException, RuntimeError) as e:
+        print(f"❌ [facebook] {e}")
+        sys.exit(1)

@@ -44,6 +44,7 @@ SALE/
   - 1 requête par mot-clé × ville (~24 annonces les plus récentes, rayon ~65 km)
   - Titre seulement (pas de description) : la blocklist ne s'applique qu'au titre
   - Auto-limité par `facebook_interval` (défaut 15 min) pour éviter les blocages
+  - Facebook bloque la plupart des IP de datacenter (redirection vers la page de connexion) : définir `FACEBOOK_PROXY` (idéalement un proxy résidentiel) pour faire passer uniquement les requêtes Facebook par ce proxy
 
 ### Filtrage intelligent
 - Mots-clés par plage de prix (ex: RTX 3080 entre 700-1600$)
@@ -107,6 +108,9 @@ UI_PASSWORD=secret
 
 # Scheduling (secondes entre chaque cycle)
 SCRAPE_INTERVAL=300
+
+# Proxy Facebook Marketplace (optionnel, ex. http://user:pass@host:port)
+FACEBOOK_PROXY=
 ```
 
 3. Lancer les services :

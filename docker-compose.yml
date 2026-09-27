@@ -18,6 +18,8 @@ services:
       - TELEGRAM_TOKEN_TV=${TELEGRAM_TOKEN_TV}
       # Scheduling
       - SCRAPE_INTERVAL=${SCRAPE_INTERVAL:-300}
+      # Proxy for Facebook Marketplace only (Facebook blocks datacenter IPs)
+      - FACEBOOK_PROXY=${FACEBOOK_PROXY:-}
     volumes:
       - ebay_data:/data
 
