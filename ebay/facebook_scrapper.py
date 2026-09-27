@@ -281,6 +281,13 @@ if __name__ == "__main__":
     queries = _as_list(config_dict.get("facebook_queries"))
     locations = _as_list(config_dict.get("facebook_locations"))
     if not queries or not locations:
+        # run.sh never overwrites an existing /data/configs file, so Facebook keys
+        # added to a bundled config do not reach a config already on the volume.
+        bundled = Path(__file__).resolve().parent / "configs" / config_path.name
+        if bundled.exists() and bundled.resolve() != config_path.resolve():
+            if load_config(str(bundled)).get("facebook_queries"):
+                print(f"⚠️  [facebook] {config_path.name}: facebook_queries/facebook_locations "
+                      f"missing here but present in bundled {bundled} — copy them into this config")
         sys.exit(0)  # config not opted in to Facebook — nothing to do
     if not source_enabled("facebook"):
         print("⏭️  Facebook source disabled (web UI)")
